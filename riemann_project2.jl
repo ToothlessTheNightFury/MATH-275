@@ -114,11 +114,6 @@ $\text{cats removed} = n \times m$
 Our derivative, with the parameters set in this report, will then be
 """
 
-# ╔═╡ 2452b971-db51-481b-93a0-834ea6fd8b28
-L"""
-y'(t) = %$(k)y(t) - %$(n * m)
-"""
-
 # ╔═╡ 3da495b6-8b2b-402b-af4a-f93dec8e4dac
 md"""
 Solving this 
@@ -139,8 +134,13 @@ md"""
 ## (d) Comparisons between No Traps, Trap-Kill, and Trap-Neuter-Return
 """
 
+# ╔═╡ c7d97fd4-39a0-40c7-870c-51d98d0e162e
+@bind reset Button("Reset")
+
 # ╔═╡ 6f580c78-736e-483b-8979-b2ed7ec8100e
 begin
+	reset
+	
 	k = 1.08
 	y_0 = 100
 	n = 0
@@ -149,7 +149,7 @@ begin
 	md"""
 	## Parameter Sliders
 	
-	Use the sliders below to modify the situation.
+	Use the sliders below to modify the model.
 	
 	**Growth Rate | $k$** $(@bind volume Slider(0:0.1:3, k, true))
 	
@@ -160,6 +160,11 @@ begin
 	**Number of Cats Captured | $m$** $(@bind m Slider(0:100, m, true)) each trap per year
 	"""
 end
+
+# ╔═╡ 2452b971-db51-481b-93a0-834ea6fd8b28
+L"""
+y'(t) = %$(k)y(t) - %$(n * m)
+"""
 
 # ╔═╡ 39f824b0-08f4-46c9-aa02-5f055b2773a3
 md"""
@@ -1862,8 +1867,9 @@ version = "1.4.1+0"
 # ╟─6c01d05e-1b6b-41cb-8454-c2884c483734
 # ╟─c167c9b1-b933-497e-aba1-74c7c59bc279
 # ╟─6f580c78-736e-483b-8979-b2ed7ec8100e
+# ╟─c7d97fd4-39a0-40c7-870c-51d98d0e162e
 # ╟─39f824b0-08f4-46c9-aa02-5f055b2773a3
-# ╠═d51c456e-fbae-4e19-a319-7b49e4214bd4
-# ╠═a75ce55d-df82-4841-bc28-1aea835ecb4e
+# ╟─d51c456e-fbae-4e19-a319-7b49e4214bd4
+# ╟─a75ce55d-df82-4841-bc28-1aea835ecb4e
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
