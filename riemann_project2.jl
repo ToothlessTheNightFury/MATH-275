@@ -23,7 +23,7 @@ end
 
 # ╔═╡ c86c6f26-1748-4fc4-8b8d-31608603fc80
 md"""
-#### RIEMANN GROUP (02/23/23)
+### RIEMANN GROUP (02/23/23)
 Abraham Castellon, Andre Khmelnitsky, Benson Yee
 """
 
@@ -175,8 +175,8 @@ md"""
 * **[2]** Schmidt, P., R. Lopez, R. and B. Collier. 2007. Survival, Fecundity, and Movements of Free-Roaming Cats. *Journal of Wildlife Management*. 271(3): 915-919.
 """
 
-# ╔═╡ a75ce55d-df82-4841-bc28-1aea835ecb4e
-
+# ╔═╡ 5e929944-54a5-4e59-9d84-6783d1810b33
+TableOfContents(title="📚 Table of Contents", indent=true, depth=4, aside=true)
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1870,6 +1870,6 @@ version = "1.4.1+0"
 # ╟─c7d97fd4-39a0-40c7-870c-51d98d0e162e
 # ╟─39f824b0-08f4-46c9-aa02-5f055b2773a3
 # ╟─d51c456e-fbae-4e19-a319-7b49e4214bd4
-# ╟─a75ce55d-df82-4841-bc28-1aea835ecb4e
+# ╟─5e929944-54a5-4e59-9d84-6783d1810b33
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
