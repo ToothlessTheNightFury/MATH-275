@@ -4,6 +4,16 @@
 using Markdown
 using InteractiveUtils
 
+# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
+macro bind(def, element)
+    quote
+        local iv = try Base.loaded_modules[Base.PkgId(Base.UUID("6e696c72-6542-2067-7265-42206c756150"), "AbstractPlutoDingetjes")].Bonds.initial_value catch; b -> missing; end
+        local el = $(esc(element))
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : iv(el)
+        el
+    end
+end
+
 # ╔═╡ d51c456e-fbae-4e19-a319-7b49e4214bd4
 # ╠═╡ show_logs = false
 begin
@@ -73,23 +83,45 @@ Mr. Kat estimates the current feral cat population in his town is $P_0 = 100$.
 The default number of traps is $n = 0$.
 
 The default average number of cats captured per year is $m = 12$.
+
+Finally, we assume cats breed first before they are caught. And because cats are rarely caught twice, we assume caught cats are never caught again.
 """
 
 # ╔═╡ c8d053b3-5d3e-45a3-83b7-e6ac757a18ee
 md"""
 ## (a) Analytic models of No Traps, Trap-Kill, and Trap-Neuter-Return
 
-The study of population change falls under the field of **Differential Equations**. It allows us to make accurate predictions about quantities at specific times, as well as how it changes over time.
+The study of population change falls under the field of **Differential Equations**. It allows us to make accurate predictions about quantities at specific times, as well as how they change over time.
 
-To do so, we will first develop a **function**, or a relation between a set of inputs and a single output.
+To do so, we will first develop a **function**, or a relation between a set of inputs and a single output. $y(t)$ will be our total population function. If we provide a time $t$, our function will give us the total population at time $t$.
 
 $y(t) = \text{total population at time } t$
 
-If we provide a time $t$, our function will give us the total population at time $t$.
-
 From there, we will develop a **derivative**, or the rate of change of a function in respect to a variable. Positive derivatives means positive rates of change, or growing populations. Negative derivatives means shrinking populations. $y'(t)$ will be the derivative of our total population function.
 
-$$y'(t) = \text{rate of change of total population at time } t$$
+$y'(t) = \text{rate of change of total population at time } t$
+
+The rate of change of population is equal to
+
+$y'(t) = ky(t) - \text{cats removed}$
+
+Where $\text{cats removed}$ is equal to the cats euthanized or unable to breed. When a cat is caught, it is either euthanized or assumed to be never caught again. So it is unable to continue adding to the population.
+
+The number of $\text{cats removed}$ is equal to the number of cats caught in each trap times the number of traps.
+
+$\text{cats removed} = n \times m$
+
+Our derivative, with the parameters set in this report, will then be
+"""
+
+# ╔═╡ 2452b971-db51-481b-93a0-834ea6fd8b28
+L"""
+y'(t) = %$(k)y(t) - %$(n * m)
+"""
+
+# ╔═╡ 3da495b6-8b2b-402b-af4a-f93dec8e4dac
+md"""
+Solving this 
 """
 
 # ╔═╡ b659dde9-3f9c-4720-99b3-f121145efe12
@@ -107,6 +139,28 @@ md"""
 ## (d) Comparisons between No Traps, Trap-Kill, and Trap-Neuter-Return
 """
 
+# ╔═╡ 6f580c78-736e-483b-8979-b2ed7ec8100e
+begin
+	k = 1.08
+	y_0 = 100
+	n = 0
+	m = 12
+	
+	md"""
+	## Parameter Sliders
+	
+	Use the sliders below to modify the situation.
+	
+	**Growth Rate | $k$** $(@bind volume Slider(0:0.1:3, k, true))
+	
+	**Initial Population | $y_0$** $(@bind y_0 Slider(0:5:500, y_0, true)) cats
+	
+	**Number of Traps | $n$** $(@bind n Slider(0:100, n, true)) traps
+
+	**Number of Cats Captured | $m$** $(@bind m Slider(0:100, m, true)) each trap per year
+	"""
+end
+
 # ╔═╡ 39f824b0-08f4-46c9-aa02-5f055b2773a3
 md"""
 ## References
@@ -115,6 +169,9 @@ md"""
 
 * **[2]** Schmidt, P., R. Lopez, R. and B. Collier. 2007. Survival, Fecundity, and Movements of Free-Roaming Cats. *Journal of Wildlife Management*. 271(3): 915-919.
 """
+
+# ╔═╡ a75ce55d-df82-4841-bc28-1aea835ecb4e
+
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1799,10 +1856,14 @@ version = "1.4.1+0"
 # ╟─59e58538-e808-4b16-8b14-5897fb6d3621
 # ╟─6f443ded-d71b-408c-821b-312d71132d42
 # ╟─c8d053b3-5d3e-45a3-83b7-e6ac757a18ee
+# ╟─2452b971-db51-481b-93a0-834ea6fd8b28
+# ╟─3da495b6-8b2b-402b-af4a-f93dec8e4dac
 # ╟─b659dde9-3f9c-4720-99b3-f121145efe12
 # ╟─6c01d05e-1b6b-41cb-8454-c2884c483734
 # ╟─c167c9b1-b933-497e-aba1-74c7c59bc279
+# ╟─6f580c78-736e-483b-8979-b2ed7ec8100e
 # ╟─39f824b0-08f4-46c9-aa02-5f055b2773a3
-# ╟─d51c456e-fbae-4e19-a319-7b49e4214bd4
+# ╠═d51c456e-fbae-4e19-a319-7b49e4214bd4
+# ╠═a75ce55d-df82-4841-bc28-1aea835ecb4e
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
