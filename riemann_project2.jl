@@ -23,7 +23,7 @@ end
 
 # ╔═╡ c86c6f26-1748-4fc4-8b8d-31608603fc80
 md"""
-### RIEMANN GROUP (02/23/23)
+##### RIEMANN GROUP (02/28/23)
 Abraham Castellon, Andre Khmelnitsky, Benson Yee
 """
 
@@ -97,41 +97,94 @@ To do so, we will first develop a **function**, or a relation between a set of i
 
 $y(t) = \text{total population at time } t$
 
-From there, we will develop a **derivative**, or the rate of change of a function in respect to a variable. Positive derivatives means positive rates of change, or growing populations. Negative derivatives means shrinking populations. $y'(t)$ will be the derivative of our total population function.
+From there, we will develop **derivatives**, or the rate of change of a function in respect to a variable. Positive derivatives means positive rates of change, or growing populations. Negative derivatives means shrinking populations. $y'(t)$ will be the derivative of our total population function.
 
 $y'(t) = \text{rate of change of total population at time } t$
 
 The rate of change of population is equal to
 
+##### No Traps
+
+$y'(t) = ky(t)$
+
+##### Trap-Kill
+
 $y'(t) = ky(t) - \text{cats removed}$
+
+##### Trap-Neuter-Return
+
+$y'(t) = k(y(t) - t \times \text{cats removed})$
 
 Where $\text{cats removed}$ is equal to the cats euthanized or unable to breed. When a cat is caught, it is either euthanized or assumed to be never caught again. So it is unable to continue adding to the population.
 
-The number of $\text{cats removed}$ is equal to the number of cats caught in each trap times the number of traps.
+The number of $\text{cats removed}$ is equal to the number of traps $n$ times the number of cats caught in each trap $m$.
 
 $\text{cats removed} = n \times m$
 
-Our derivative, with the parameters set in this report, will then be
+Our derivatives, with the parameters set in this report, will then be
 """
 
-# ╔═╡ 3da495b6-8b2b-402b-af4a-f93dec8e4dac
+# ╔═╡ 38b62ba8-28b6-43d7-a25a-1035f754b7da
 md"""
-Solving this 
+### Derivatives of models
+"""
+
+# ╔═╡ 015f7b2a-f96a-4a81-8707-8d8ae24c2d24
+md"""
+##### No Traps
+"""
+
+# ╔═╡ 2435c6ef-ba1d-46fc-8eab-1d176665f89c
+md"""
+##### Trap-Kill
+"""
+
+# ╔═╡ 5294bc5c-31ef-4d58-ad97-21388a44dbae
+md"""
+##### Trap-Neuter-Return
+"""
+
+# ╔═╡ fbeb6dde-4063-4033-8f91-235ba2374b01
+md"""
+### Solutions of models
+"""
+
+# ╔═╡ c81543a6-88d4-41e1-a234-2966692833c3
+md"""
+##### No Traps
+"""
+
+# ╔═╡ f78c2e04-a4d0-4dd3-9d53-6ef12fb3ab44
+md"""
+##### Trap-Kill
+"""
+
+# ╔═╡ 8f18718f-609c-4763-9dfc-7f1a2ba5a508
+md"""
+##### Trap-Neuter-Return
 """
 
 # ╔═╡ b659dde9-3f9c-4720-99b3-f121145efe12
 md"""
 ## (b) Numerical models of No Traps, Trap-Kill, and Trap-Neuter-Return
+
+Another way to study differential equations is through numerical models. Computers can be used to quickly calculate, then graph solutions through computational force.
+
+This Pluto notebook uses `DifferentialEquations.jl`, a suite for numerically solving differential equations. 
+
+Plugging in our derivatives gives us the following equations:
 """
 
-# ╔═╡ 6c01d05e-1b6b-41cb-8454-c2884c483734
+# ╔═╡ deb671d1-e68f-4e10-a5c2-25c25104f594
 md"""
-## (c) Critical number of traps
+### Solutions of models
 """
 
-# ╔═╡ c167c9b1-b933-497e-aba1-74c7c59bc279
+# ╔═╡ a59a69ce-0ca6-4a95-bef0-8add4b14d613
 md"""
-## (d) Comparisons between No Traps, Trap-Kill, and Trap-Neuter-Return
+##### Analytical Model
+
+$(@bind selectModel Select(["No Trap", "Trap-Kill", "Trap-Neuter-Return"]))
 """
 
 # ╔═╡ c7d97fd4-39a0-40c7-870c-51d98d0e162e
@@ -143,7 +196,7 @@ begin
 	
 	k = 1.08
 	y_0 = 100
-	n = 0
+	n = 5
 	m = 12
 	
 	md"""
@@ -163,7 +216,87 @@ end
 
 # ╔═╡ 2452b971-db51-481b-93a0-834ea6fd8b28
 L"""
+y'(t) = %$(k)y(t)
+"""
+
+# ╔═╡ 0aa25ffb-af59-4c64-a849-694315f32104
+L"""
 y'(t) = %$(k)y(t) - %$(n * m)
+"""
+
+# ╔═╡ 40b38292-4245-47ef-b71b-24a7c7af98d4
+L"""
+y'(t) = %$(k)(y(t) - %$(n * m)t)
+"""
+
+# ╔═╡ 3da495b6-8b2b-402b-af4a-f93dec8e4dac
+begin
+	nm = n * m
+	e_coeff = y_0 - (nm / k)
+
+	md"""
+	Solving these equations step-by-step requires calculus that is beyond the scope of this report. However, because these are **ordinary differential equation** (ODE), it is indeed solvable. Solving these equations gives us
+	"""
+end
+
+# ╔═╡ 9736c6fd-8715-4d60-9b91-bcb0fae0ca2b
+L"""
+y(t) = %$(y_0)e^{%$(k)t}
+"""
+
+# ╔═╡ df3009fd-da6a-4b07-a387-f518baf63a7a
+anal_no_trap(t) = y_0 * exp(k * t);
+
+# ╔═╡ 56386ade-514a-4b93-ad5c-f690f3ab7bf9
+L"""
+y(t) = %$(k * y_0 - nm)e^{%$(k)t} + \frac{%$(nm)}{%$(k)}
+"""
+
+# ╔═╡ 2e9f7f26-e74f-4776-b2fb-6cf8cd7c890c
+anal_trap_kill(t) = (k * y_0 - nm) * exp(k * t) + (nm / k);
+
+# ╔═╡ 8296cb58-f1cf-4b21-8385-a535aef105af
+L"""
+y(t) = %$(n * m)t + \frac{%$(nm)}{%$(k)} + %$(y_0 - (nm / k))e^{%$(k)t}
+"""
+
+# ╔═╡ 7a1808ff-83f1-44a6-846b-82af8497837f
+anal_trap_neuter_return(t) = (nm * t) + (nm / k) + (y_0 - (nm / k)) * exp(k * t);
+
+# ╔═╡ 6c01d05e-1b6b-41cb-8454-c2884c483734
+md"""
+## (c) Critical number of traps
+"""
+
+# ╔═╡ ec74fb0c-f703-4c3b-8184-1acc5a200407
+md"""
+With the variables stated in **Givens and Context**, the critical number of traps is around **10 traps**. Less than **10 traps** will result in a growing population. More than **10 traps** will result in a declining population.
+"""
+
+# ╔═╡ c167c9b1-b933-497e-aba1-74c7c59bc279
+md"""
+## (d) Comparisons between Trap-Kill, and Trap-Neuter-Return
+"""
+
+# ╔═╡ 53480be6-eb40-4775-b957-222e7c03e48a
+md"""
+**Trap-Kill** is more effective than **Trap-Neuter-Return** in reducing cat population. However, both are very good methods, especially compared to **No Traps**.
+
+This means, if you are looking for a more humane solution to feral cat populations, a trap-neuter-return strategy will indeed yield effective results. For more effective results, add more traps.
+"""
+
+# ╔═╡ b2c4893b-b1b1-4bab-a53d-0d5a24a5344d
+md"""
+## Credits
+
+#### Abraham Castellon
+Abraham created the initial analysis, verified equations, and worked together with Andre on the mathematics and the background needed to complete this report.
+
+#### Andre Khmelnitsky
+Andre discretized the functions, created differential equations for each scenario, and then proceeded to solve those equations using the required methods for each. 
+
+#### Benson Yee
+Benson was the main programmer, designer, and organizer for the Julia notebook. He compiled the information from Abraham and Andre into a neat, comprehensible format.
 """
 
 # ╔═╡ 39f824b0-08f4-46c9-aa02-5f055b2773a3
@@ -177,6 +310,95 @@ md"""
 
 # ╔═╡ 5e929944-54a5-4e59-9d84-6783d1810b33
 TableOfContents(title="📚 Table of Contents", indent=true, depth=4, aside=true)
+
+# ╔═╡ 171471f0-4e86-4a81-a5b2-b14fdde0ea45
+# (b) Numerical calulations
+
+# ╔═╡ 777646fc-8bb0-40f1-8001-3bf5923a89ea
+function no_trap(u, p, t)
+	y = u  # to represent the ODE in terms of the original variable y.
+	k, n, m = p
+	dy = (k * y)
+end;
+
+# ╔═╡ 67ddb0fc-93e4-4022-bc8e-f98b268cc250
+function trap_kill(u, p, t)
+	y = u  # to represent the ODE in terms of the original variable y.
+	k, n, m = p
+	dy = (k * y) - (n * m)
+end;
+
+# ╔═╡ 2d24960e-5a85-4591-9687-3b62c5f5b67e
+function trap_neuter_return(u, p, t)
+	y = u  # to represent the ODE in terms of the original variable y.
+	k, n, m = p
+	dy = (k * y) - (k * n * m * t)
+end;
+
+# ╔═╡ 300681ac-8384-4568-abc5-941603f565fd
+p = [k, n, m];
+
+# ╔═╡ a303e8b0-702e-419d-a740-556712fa9a73
+x0 = y_0;  # This is x(0)
+
+# ╔═╡ 59a18c2f-6b2c-47e8-8dc5-b00c5aca9471
+tspan = (0, 2);
+
+# ╔═╡ 20cf24c7-8cd4-43b8-a36c-e761d98311cb
+prob_no_trap = ODEProblem(no_trap, x0, tspan, p);
+
+# ╔═╡ 32c7fec2-e41f-41ea-b18d-eb297fa1b67d
+prob_trap_kill = ODEProblem(trap_kill, x0, tspan, p);
+
+# ╔═╡ 45ff8815-59d6-4e21-b083-ec76997b9d32
+prob_trap_neuter_return = ODEProblem(trap_neuter_return, x0, tspan, p);
+
+# ╔═╡ c133cec8-61f6-4dc1-a5c3-bc83d8b2eadc
+sol_no_trap = solve(prob_no_trap);
+
+# ╔═╡ 81e26a14-196d-4f6e-beae-b3005d38af97
+sol_trap_kill = solve(prob_trap_kill);
+
+# ╔═╡ 370a5fc1-8b73-4fe0-83da-3595407e0af5
+sol_trap_neuter_return = solve(prob_trap_neuter_return);
+
+# ╔═╡ 260a1ab4-8b2d-4225-82d9-a98e900d5eeb
+if selectModel == "No Trap"
+	anal_model = anal_no_trap
+elseif selectModel == "Trap-Kill"
+	anal_model = anal_trap_kill
+elseif selectModel == "Trap-Neuter-Return"
+	anal_model = anal_trap_neuter_return
+end;
+
+# ╔═╡ 73ee5a02-dd3b-472d-9a79-8b53eb6a24c6
+begin
+	plot(sol_no_trap,
+		color = :darkviolet,
+		linewidth = 4,
+		label = "No trap"
+	)
+	
+	plot!(sol_trap_kill, 
+		color = :firebrick,
+		linewidth = 4,
+		label = "Trap-Kill")
+
+	plot!(sol_trap_neuter_return, 
+		color = :deepskyblue4,
+		linewidth = 4,
+		label = "Trap-Neuter-Return")
+
+	plot!(anal_model, 
+		color = :seashell3,
+		linewidth = 2,
+		label = "Analytical Model",
+		title = "Cat Model",
+		xaxis = "Time (year)",
+		yaxis = "Number of Cats",
+		xrange = (0, 2),
+	)
+end
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1861,15 +2083,51 @@ version = "1.4.1+0"
 # ╟─59e58538-e808-4b16-8b14-5897fb6d3621
 # ╟─6f443ded-d71b-408c-821b-312d71132d42
 # ╟─c8d053b3-5d3e-45a3-83b7-e6ac757a18ee
+# ╟─38b62ba8-28b6-43d7-a25a-1035f754b7da
+# ╟─015f7b2a-f96a-4a81-8707-8d8ae24c2d24
 # ╟─2452b971-db51-481b-93a0-834ea6fd8b28
+# ╟─2435c6ef-ba1d-46fc-8eab-1d176665f89c
+# ╟─0aa25ffb-af59-4c64-a849-694315f32104
+# ╟─5294bc5c-31ef-4d58-ad97-21388a44dbae
+# ╟─40b38292-4245-47ef-b71b-24a7c7af98d4
 # ╟─3da495b6-8b2b-402b-af4a-f93dec8e4dac
+# ╟─fbeb6dde-4063-4033-8f91-235ba2374b01
+# ╟─c81543a6-88d4-41e1-a234-2966692833c3
+# ╟─9736c6fd-8715-4d60-9b91-bcb0fae0ca2b
+# ╟─df3009fd-da6a-4b07-a387-f518baf63a7a
+# ╟─f78c2e04-a4d0-4dd3-9d53-6ef12fb3ab44
+# ╟─56386ade-514a-4b93-ad5c-f690f3ab7bf9
+# ╟─2e9f7f26-e74f-4776-b2fb-6cf8cd7c890c
+# ╟─8f18718f-609c-4763-9dfc-7f1a2ba5a508
+# ╟─8296cb58-f1cf-4b21-8385-a535aef105af
+# ╟─7a1808ff-83f1-44a6-846b-82af8497837f
 # ╟─b659dde9-3f9c-4720-99b3-f121145efe12
-# ╟─6c01d05e-1b6b-41cb-8454-c2884c483734
-# ╟─c167c9b1-b933-497e-aba1-74c7c59bc279
+# ╟─deb671d1-e68f-4e10-a5c2-25c25104f594
+# ╟─73ee5a02-dd3b-472d-9a79-8b53eb6a24c6
+# ╟─a59a69ce-0ca6-4a95-bef0-8add4b14d613
 # ╟─6f580c78-736e-483b-8979-b2ed7ec8100e
 # ╟─c7d97fd4-39a0-40c7-870c-51d98d0e162e
+# ╟─6c01d05e-1b6b-41cb-8454-c2884c483734
+# ╟─ec74fb0c-f703-4c3b-8184-1acc5a200407
+# ╟─c167c9b1-b933-497e-aba1-74c7c59bc279
+# ╟─53480be6-eb40-4775-b957-222e7c03e48a
+# ╟─b2c4893b-b1b1-4bab-a53d-0d5a24a5344d
 # ╟─39f824b0-08f4-46c9-aa02-5f055b2773a3
 # ╟─d51c456e-fbae-4e19-a319-7b49e4214bd4
 # ╟─5e929944-54a5-4e59-9d84-6783d1810b33
+# ╟─171471f0-4e86-4a81-a5b2-b14fdde0ea45
+# ╟─777646fc-8bb0-40f1-8001-3bf5923a89ea
+# ╟─67ddb0fc-93e4-4022-bc8e-f98b268cc250
+# ╟─2d24960e-5a85-4591-9687-3b62c5f5b67e
+# ╟─300681ac-8384-4568-abc5-941603f565fd
+# ╟─a303e8b0-702e-419d-a740-556712fa9a73
+# ╟─59a18c2f-6b2c-47e8-8dc5-b00c5aca9471
+# ╟─20cf24c7-8cd4-43b8-a36c-e761d98311cb
+# ╟─32c7fec2-e41f-41ea-b18d-eb297fa1b67d
+# ╟─45ff8815-59d6-4e21-b083-ec76997b9d32
+# ╟─c133cec8-61f6-4dc1-a5c3-bc83d8b2eadc
+# ╟─81e26a14-196d-4f6e-beae-b3005d38af97
+# ╟─370a5fc1-8b73-4fe0-83da-3595407e0af5
+# ╟─260a1ab4-8b2d-4225-82d9-a98e900d5eeb
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
